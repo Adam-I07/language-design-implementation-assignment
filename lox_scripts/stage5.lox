@@ -1,0 +1,9 @@
+var is_running = true;
+var shopping_list = "";
+while (is_running == true) {
+    var item = input("add an item to the shopping list: ");
+    if (item == "") {
+        is_running = false;
+    }
+    shopping_list = shopping_list + ", " + item;
+}   

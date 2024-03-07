@@ -1,0 +1,15 @@
+var quickMaths = 9 + 10;
+quickMaths = quickMaths + 2;
+print quickMaths;
+
+var floatTest = 1.0;
+floatTest = floatTest + 5;
+print floatTest;
+
+var stringCatTest = "10 corgis";
+stringCatTest = stringCatTest + 5 + " more corgis";
+print stringCatTest;
+
+var errorTest = 5;
+errorTest = errorTest + "insert string here";
+print errorTest;
