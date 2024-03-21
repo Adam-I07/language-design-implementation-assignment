@@ -13,6 +13,7 @@ from LoxFunction import LoxFunction
 from LoxClass import LoxClass
 from LoxInstance import LoxInstance
 from Return import Return
+from LoxInput import LoxInput
 
 
 class Interpreter(Expr.Visitor[object], Stmt.Visitor[None]):
@@ -20,6 +21,7 @@ class Interpreter(Expr.Visitor[object], Stmt.Visitor[None]):
         self.globals = Environment()
         self._environment = self.globals
         self._locals = {}
+        self.globals.define("input", LoxInput())
 
         def _arity(self) -> int:
             return 0
