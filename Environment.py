@@ -1,6 +1,6 @@
 from typing import Self
 from Token import Token
-from Runtime_error import RuntimeError
+from RuntimeError import RuntimeError
 
 
 class Environment:

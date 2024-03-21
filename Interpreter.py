@@ -3,15 +3,15 @@ from typing import List, Self
 from types import MethodType
 import Expr
 import Stmt
-from Token_type import TokenType
+from TokenType import TokenType
 from Token import Token
-from Runtime_error import RuntimeError
-from Error_reporter import error_reporter
+from RuntimeError import RuntimeError
+from ErrorReporter import error_reporter
 from Environment import Environment
-from lox_callable import LoxCallable
-from lox_function import LoxFunction
-from lox_class import LoxClass
-from lox_instance import LoxInstance
+from LoxCallable import LoxCallable
+from LoxFunction import LoxFunction
+from LoxClass import LoxClass
+from LoxInstance import LoxInstance
 from Return import Return
 
 

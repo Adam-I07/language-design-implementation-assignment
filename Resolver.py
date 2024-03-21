@@ -2,7 +2,7 @@ import Expr
 import Stmt
 from Token import Token
 from Interpreter import Interpreter
-from Error_reporter import error_reporter
+from ErrorReporter import error_reporter
 from enum import Enum
 from typing import List, overload
 from functools import singledispatchmethod

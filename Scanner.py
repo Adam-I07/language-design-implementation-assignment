@@ -1,6 +1,6 @@
-from Token_type import TokenType
+from TokenType import TokenType
 from Token import Token
-from Error_reporter import error_reporter
+from ErrorReporter import error_reporter
 from typing import List, Optional
 
 

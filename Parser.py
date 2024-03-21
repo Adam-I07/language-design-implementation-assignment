@@ -1,7 +1,7 @@
 from typing import List
 from Token import Token
-from Token_type import TokenType
-from Error_reporter import error_reporter
+from TokenType import TokenType
+from ErrorReporter import error_reporter
 from Expr import (Expr, Assign, Binary, Unary, Literal, Grouping, Variable, Logical, Call, Get, Set, This, Super,)
 from Stmt import Stmt, Print, Expression, Var, Block, If, While, Function, Return, Class
 

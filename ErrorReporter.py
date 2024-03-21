@@ -1,8 +1,8 @@
 import sys
 from functools import singledispatchmethod
 from Token import Token
-from Token_type import TokenType
-from Runtime_error import RuntimeError
+from TokenType import TokenType
+from RuntimeError import RuntimeError
 
 
 class ErrorReporter:

@@ -1,8 +1,8 @@
 from typing import List, Self
 from Return import Return
 from Environment import Environment
-from lox_callable import LoxCallable
-from lox_instance import LoxInstance
+from LoxCallable import LoxCallable
+from LoxInstance import LoxInstance
 from Stmt import Function
 
 

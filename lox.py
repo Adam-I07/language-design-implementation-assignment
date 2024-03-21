@@ -2,7 +2,7 @@ import sys
 import os
 from Scanner import Scanner
 from Parser import Parser
-from Error_reporter import error_reporter
+from ErrorReporter import error_reporter
 from Interpreter import Interpreter
 from Resolver import Resolver
 
@@ -85,7 +85,6 @@ class Lox:
     def run_file(self, path: str):
         with open(path, "r") as f:
             self.run(f.read())
-
             if error_reporter.had_error:
                 sys.exit(65)
             if error_reporter.had_runtime_error:
@@ -96,17 +95,13 @@ class Lox:
         tokens = scanner.scan_tokens()
         parser = Parser(tokens)
         statements = parser.parse()
-
         if error_reporter.had_error:
             return
-
         resolver = Resolver(self._interpreter)
         resolver._resolve(statements)
-
         # Stop if there was a resolution error
         if error_reporter.had_error:
             return
-
         self._interpreter.interpret(statements)
 
 

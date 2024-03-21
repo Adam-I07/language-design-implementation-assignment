@@ -1,6 +1,6 @@
-from lox_callable import LoxCallable
-from lox_instance import LoxInstance
-from lox_function import LoxFunction
+from LoxCallable import LoxCallable
+from LoxInstance import LoxInstance
+from LoxFunction import LoxFunction
 from typing import List, Dict, Self
 
 
