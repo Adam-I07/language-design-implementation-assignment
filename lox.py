@@ -98,7 +98,7 @@ class Lox:
         if error_reporter.had_error:
             return
         resolver = Resolver(self._interpreter)
-        resolver._resolve(statements)
+        resolver.resolve(statements)
         # Stop if there was a resolution error
         if error_reporter.had_error:
             return

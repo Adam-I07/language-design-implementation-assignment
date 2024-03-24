@@ -23,249 +23,221 @@ class ClassType(Enum):
 
 class Resolver(Expr.Visitor[None], Stmt.Visitor[None]):
     def __init__(self, interpreter: Interpreter):
-        self._interpreter = interpreter
-        self._scopes = []
-        self._current_function = FunctionType.NONE
-        self._current_class = ClassType.NONE
+        self.interpreter = interpreter
+        self.scopes = []
+        self.current_function = FunctionType.NONE
+        self.current_class = ClassType.NONE
 
     @singledispatchmethod
-    def _overloaded_resolve(self, arg) -> None:
+    def overloaded_resolve(self, arg):
         return NotImplemented
 
-    @_overloaded_resolve.register
-    def _(self, statements: list) -> None:
+    @overloaded_resolve.register
+    def _(self, statements: list):
         for statement in statements:
-            self._overloaded_resolve(statement)
+            self.overloaded_resolve(statement)
 
-    @_overloaded_resolve.register
-    def _(self, _stmt: Stmt.Stmt) -> None:
+    @overloaded_resolve.register
+    def _(self, _stmt: Stmt.Stmt):
         _stmt.accept(self)
 
-    @_overloaded_resolve.register
-    def _(self, _expr: Expr.Expr) -> None:
+    @overloaded_resolve.register
+    def _(self, _expr: Expr.Expr):
         _expr.accept(self)
 
     @overload
-    def _resolve(self, statements: List[Stmt.Stmt]) -> None:
+    def resolve(self, statements: List[Stmt.Stmt]):
         ...
 
     @overload
-    def _resolve(self, _stmt: Stmt.Stmt) -> None:
+    def resolve(self, _stmt: Stmt.Stmt):
         ...
 
     @overload
-    def _resolve(self, _expr: Expr.Expr) -> None:
+    def resolve(self, _expr: Expr.Expr):
         ...
 
-    def _resolve(self, *args, **kwargs) -> None:
-        return self._overloaded_resolve(*args, **kwargs)
+    def resolve(self, *args, **kwargs):
+        return self.overloaded_resolve(*args, **kwargs)
 
-    def _resolve_function(self, function: Stmt.Function, type: FunctionType) -> None:
-        enclosing_function = self._current_function
-        self._current_function = type
-
-        self._begin_scope()
+    def resolve_function(self, function: Stmt.Function, type: FunctionType):
+        enclosing_function = self.current_function
+        self.current_function = type
+        self.begin_scope()
         for param in function.params:
-            self._declare(param)
-            self._define(param)
-        self._resolve(function.body)
-        self._end_scope()
-        self._current_function = enclosing_function
+            self.declare(param)
+            self.define(param)
+        self.resolve(function.body)
+        self.end_scope()
+        self.current_function = enclosing_function
 
-    def _begin_scope(self) -> None:
-        self._scopes.append({})
+    def begin_scope(self):
+        self.scopes.append({})
 
-    def _end_scope(self) -> None:
-        self._scopes.pop()
+    def end_scope(self):
+        self.scopes.pop()
 
-    def _declare(self, name: Token) -> None:
-        if len(self._scopes) == 0:
+    def declare(self, name: Token):
+        if len(self.scopes) == 0:
             return
 
-        if name.lexme in self._scopes[-1]:
+        if name.lexme in self.scopes[-1]:
             error_reporter.error(
                 name, "Already a variable with this name in this scope."
             )
 
-        self._scopes[-1][name.lexme] = False
+        self.scopes[-1][name.lexme] = False
 
-    def _define(self, name: Token) -> None:
-        if len(self._scopes) == 0:
+    def define(self, name: Token):
+        if len(self.scopes) == 0:
             return
-        self._scopes[-1][name.lexme] = True
+        self.scopes[-1][name.lexme] = True
 
-    def _resolve_local(self, _expr: Expr.Expr, name: Token) -> None:
-        for idx in range(len(self._scopes) - 1, -1, -1):
-            if name.lexme in self._scopes[idx]:
-                self._interpreter.resolve(_expr, len(self._scopes) - 1 - idx)
+    def resolve_local(self, _expr: Expr.Expr, name: Token):
+        for idx in range(len(self.scopes) - 1, -1, -1):
+            if name.lexme in self.scopes[idx]:
+                self.interpreter.resolve(_expr, len(self.scopes) - 1 - idx)
                 return
 
-    def visit_block_stmt(self, _stmt: Stmt.Block) -> None:
-        self._begin_scope()
-        self._resolve(_stmt.statements)
-        self._end_scope()
+    def visit_block_stmt(self, _stmt: Stmt.Block):
+        self.begin_scope()
+        self.resolve(_stmt.statements)
+        self.end_scope()
         return None
 
-    def visit_expression_stmt(self, _stmt: Stmt.Expression) -> None:
-        self._resolve(_stmt.expression)
+    def visit_expression_stmt(self, _stmt: Stmt.Expression):
+        self.resolve(_stmt.expression)
         return None
 
-    def visit_class_stmt(self, _stmt: Stmt.Class) -> None:
-        enclosing_class = self._current_class
-        self._current_class = ClassType.CLASS
-
-        self._declare(_stmt.name)
-        self._define(_stmt.name)
-
-        if (
-            _stmt.superclass is not None
-            and _stmt.name.lexme == _stmt.superclass.name.lexme
-        ):
-            error_reporter.error(
-                _stmt.superclass.name, "A class can't inherit from itself."
-            )
-
+    def visit_class_stmt(self, _stmt: Stmt.Class):
+        enclosing_class = self.current_class
+        self.current_class = ClassType.CLASS
+        self.declare(_stmt.name)
+        self.define(_stmt.name)
+        if (_stmt.superclass is not None and _stmt.name.lexme == _stmt.superclass.name.lexme):
+            error_reporter.error(_stmt.superclass.name, "A class can't inherit from itself.")
         if _stmt.superclass is not None:
-            self._current_class = ClassType.SUBCLASS
-            self._resolve(_stmt.superclass)
-
+            self.current_class = ClassType.SUBCLASS
+            self.resolve(_stmt.superclass)
         if _stmt.superclass is not None:
-            self._begin_scope()
-            self._scopes[-1]["super"] = True
-
-        self._begin_scope()
-        self._scopes[-1]["this"] = True
-
+            self.begin_scope()
+            self.scopes[-1]["super"] = True
+        self.begin_scope()
+        self.scopes[-1]["this"] = True
         for method in _stmt.methods:
             declaration = FunctionType.METHOD
             if method.name.lexme == "init":
                 declaration = FunctionType.INTIALIZER
-
-            self._resolve_function(method, declaration)
-
-        self._end_scope()
-
+            self.resolve_function(method, declaration)
+        self.end_scope()
         if _stmt.superclass is not None:
-            self._end_scope()
-
-        self._current_class = enclosing_class
+            self.end_scope()
+        self.current_class = enclosing_class
         return None
 
-    def visit_if_stmt(self, _stmt: Stmt.If) -> None:
-        self._resolve(_stmt.condition)
-        self._resolve(_stmt.then_branch)
+    def visit_if_stmt(self, _stmt: Stmt.If):
+        self.resolve(_stmt.condition)
+        self.resolve(_stmt.then_branch)
         if _stmt.else_branch is not None:
-            self._resolve(_stmt.else_branch)
+            self.resolve(_stmt.else_branch)
         return None
 
-    def visit_print_stmt(self, _stmt: Stmt.Print) -> None:
-        self._resolve(_stmt.expression)
+    def visit_print_stmt(self, _stmt: Stmt.Print):
+        self.resolve(_stmt.expression)
         return None
 
-    def visit_return_stmt(self, _stmt: Stmt.Return) -> None:
-        if self._current_function == FunctionType.NONE:
+    def visit_return_stmt(self, _stmt: Stmt.Return):
+        if self.current_function == FunctionType.NONE:
             error_reporter.error(_stmt.keyword, "Can't return from top-level code.")
 
         if _stmt.value is not None:
-            if self._current_function == FunctionType.INTIALIZER:
-                error_reporter.error(
-                    _stmt.keyword, "Can't return a value from an initializer."
-                )
-
-            self._resolve(_stmt.value)
+            if self.current_function == FunctionType.INTIALIZER:
+                error_reporter.error(_stmt.keyword, "Can't return a value from an initializer.")
+            self.resolve(_stmt.value)
 
         return None
 
-    def visit_function_stmt(self, _stmt: Stmt.Function) -> None:
-        self._declare(_stmt.name)
-        self._define(_stmt.name)
+    def visit_function_stmt(self, _stmt: Stmt.Function):
+        self.declare(_stmt.name)
+        self.define(_stmt.name)
 
-        self._resolve_function(_stmt, FunctionType.FUNCTION)
+        self.resolve_function(_stmt, FunctionType.FUNCTION)
         return None
 
-    def visit_var_stmt(self, _stmt: Stmt.Var) -> None:
-        self._declare(_stmt.name)
+    def visit_var_stmt(self, _stmt: Stmt.Var):
+        self.declare(_stmt.name)
         if _stmt.initializer is not None:
-            self._resolve(_stmt.initializer)
-        self._define(_stmt.name)
+            self.resolve(_stmt.initializer)
+        self.define(_stmt.name)
         return None
 
-    def visit_while_stmt(self, _stmt: Stmt.While) -> None:
-        self._resolve(_stmt.condition)
-        self._resolve(_stmt.body)
+    def visit_while_stmt(self, _stmt: Stmt.While):
+        self.resolve(_stmt.condition)
+        self.resolve(_stmt.body)
         return None
 
-    def visit_assign_expr(self, _expr: Expr.Assign) -> None:
-        self._resolve(_expr.value)
-        self._resolve_local(_expr, _expr.name)
+    def visit_assign_expr(self, _expr: Expr.Assign):
+        self.resolve(_expr.value)
+        self.resolve_local(_expr, _expr.name)
         return None
 
-    def visit_binary_expr(self, _expr: Expr.Binary) -> None:
-        self._resolve(_expr.left)
-        self._resolve(_expr.right)
+    def visit_binary_expr(self, _expr: Expr.Binary):
+        self.resolve(_expr.left)
+        self.resolve(_expr.right)
         return None
 
-    def visit_call_expr(self, _expr: Expr.Call) -> None:
-        self._resolve(_expr.callee)
+    def visit_call_expr(self, _expr: Expr.Call):
+        self.resolve(_expr.callee)
 
         for argument in _expr.arguments:
-            self._resolve(argument)
+            self.resolve(argument)
 
         return None
 
-    def visit_get_expr(self, _expr: Expr.Get) -> None:
-        self._resolve(_expr.object)
+    def visit_get_expr(self, _expr: Expr.Get):
+        self.resolve(_expr.object)
         return None
 
-    def visit_grouping_expr(self, _expr: Expr.Grouping) -> None:
-        self._resolve(_expr.expression)
+    def visit_grouping_expr(self, _expr: Expr.Grouping):
+        self.resolve(_expr.expression)
         return None
 
-    def visit_literal_expr(self, _expr: Expr.Literal) -> None:
+    def visit_literal_expr(self, _expr: Expr.Literal):
         return None
 
-    def visit_logical_expr(self, _expr: Expr.Logical) -> None:
-        self._resolve(_expr.left)
-        self._resolve(_expr.right)
+    def visit_logical_expr(self, _expr: Expr.Logical):
+        self.resolve(_expr.left)
+        self.resolve(_expr.right)
         return None
 
-    def visit_set_expr(self, _expr: Expr.Set) -> None:
-        self._resolve(_expr.value)
-        self._resolve(_expr.object)
+    def visit_set_expr(self, _expr: Expr.Set):
+        self.resolve(_expr.value)
+        self.resolve(_expr.object)
         return None
 
-    def visit_super_expr(self, _expr: Expr.Super) -> None:
-        if self._current_class == ClassType.NONE:
+    def visit_super_expr(self, _expr: Expr.Super):
+        if self.current_class == ClassType.NONE:
             error_reporter.error(_expr.keyword, "Can't use 'super' outside of a class.")
-        elif self._current_class != ClassType.SUBCLASS:
-            error_reporter.error(
-                _expr.keyword, "Can't use 'super' in a class with no superclass."
-            )
+        elif self.current_class != ClassType.SUBCLASS:
+            error_reporter.error(_expr.keyword, "Can't use 'super' in a class with no superclass.")
 
-        self._resolve_local(_expr, _expr.keyword)
+        self.resolve_local(_expr, _expr.keyword)
         return None
 
-    def visit_this_expr(self, _expr: Expr.This) -> None:
-        if self._current_class == ClassType.NONE:
+    def visit_this_expr(self, _expr: Expr.This):
+        if self.current_class == ClassType.NONE:
             error_reporter.error(_expr.keyword, "Can't use 'this' outside of a class.")
             return None
 
-        self._resolve_local(_expr, _expr.keyword)
+        self.resolve_local(_expr, _expr.keyword)
         return None
 
-    def visit_unary_expr(self, _expr: Expr.Unary) -> None:
-        self._resolve(_expr.right)
+    def visit_unary_expr(self, _expr: Expr.Unary):
+        self.resolve(_expr.right)
         return None
 
-    def visit_variable_expr(self, _expr: Expr.Variable) -> None:
-        if (
-            len(self._scopes) > 0
-            and _expr.name.lexme in self._scopes[-1]
-            and not self._scopes[-1][_expr.name.lexme]
-        ):
-            error_reporter.error(
-                _expr.name, "Can't read local variable in its own initializer."
-            )
-
-        self._resolve_local(_expr, _expr.name)
+    def visit_variable_expr(self, _expr: Expr.Variable):
+        if (len(self.scopes) > 0 and _expr.name.lexme in self.scopes[-1] and not self.scopes[-1][_expr.name.lexme]):
+            error_reporter.error(_expr.name, "Can't read local variable in its own initialiser.")
+        self.resolve_local(_expr, _expr.name)
         return None

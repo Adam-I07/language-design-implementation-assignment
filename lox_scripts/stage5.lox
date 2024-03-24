@@ -7,3 +7,4 @@ while (is_running == true) {
     }
     shopping_list = shopping_list + ", " + item;
 }   
+print shopping_list;

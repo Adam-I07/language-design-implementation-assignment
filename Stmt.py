@@ -2,16 +2,20 @@ from Expr import Expr, Variable
 from Token import Token
 from typing import Generic, TypeVar, List
 
-R = TypeVar("R")
+# Defines a generic type variable R for return types.
+R = TypeVar("R")  
 
-class Stmt:
+# Base class for all statement types.
+class Stmt:  
     def __init__(self):
         pass
 
-class Visitor(Generic[R]):
+# Generic visitor class for implementing visitor pattern.
+class Visitor(Generic[R]):  
     def __init__(self):
-        pass
+        pass 
 
+# Maps statement types to their attributes for dynamic class generation.
 subclasses = {
     "Block": {"statements": "List[Stmt]"},
     "Expression": {"expression": "Expr"},
@@ -24,23 +28,22 @@ subclasses = {
     "While": {"condition": "Expr", "body": "Stmt"},
 }
 
-for name, attributes in subclasses.items():
-    # Initialize the class
-    args = ""
-    instance_init = ""
-    for arg, arg_type in attributes.items():
+# Iterate through statement types and dynamically create classes.
+for name, attributes in subclasses.items():  
+    args = ""  # Initialises argument string for constructor signature.
+    instance_init = ""  # Initialises instance variable assignment code.
+    for arg, arg_type in attributes.items():  # Builds constructor argument string.
         args += f", {arg}: {arg_type}"
 
-    subclass_str = ""
-    subclass_str += f"class {name}(Stmt):\n"
-    subclass_str += f"    def __init__(self{args}):\n"
+    subclass_str = ""  # Initialises the string to hold the class definition code.
+    subclass_str += f"class {name}(Stmt):\n"  # Starts class definition.
+    subclass_str += f"    def __init__(self{args}):\n"  # Adds constructor signature.
 
-    for arg in attributes:
+    for arg in attributes:  # Adds code to assign instance variables.
         subclass_str += f"        self.{arg} = {arg}\n"
 
     subclass_str += "\n"
-    subclass_str += "    def accept(self, visitor: Visitor[R]) -> R:\n"
+    subclass_str += "    def accept(self, visitor: Visitor[R]) -> R:\n"  # Adds accept method for visitor pattern.
     subclass_str += f"        return visitor.visit_{name.lower()}_stmt(self)\n"
 
-    # Exposes the class when module is imported
-    exec(subclass_str, globals())
+    exec(subclass_str, globals())  # Dynamically executes the class definition code in the global namespace.
