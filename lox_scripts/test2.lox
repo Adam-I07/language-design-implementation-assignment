@@ -4,9 +4,7 @@ class Foo {
   }
 
   addTogether() {
-    var num1 = input("Enter first number to add: ");
-    var num2 = input("Enter second number to add: ");
-    return num1 + num2;
+    return 2 + 9;
   }
 }
 
