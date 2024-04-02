@@ -82,27 +82,41 @@ class Lox:
         # Terminate the program immediately without an error message.
         sys.exit()
 
+    # Executes a Lox script from a file, handling syntax and runtime errors.
     def run_file(self, path: str):
-        with open(path, "r") as f:
-            self.run(f.read())
+        # Opens the file for reading.
+        with open(path, "r") as f: 
+            # Reads and executes the script content.
+            self.run(f.read())  
+            # Exits with error code 65 if a syntax error occurred.
             if error_reporter.had_error:
                 sys.exit(65)
+            # Exits with error code 70 if a runtime error occurred.
             if error_reporter.had_runtime_error:
                 sys.exit(70)
 
+    # Interprets the Lox source code provided as a string.
     def run(self, src: str):
-        scanner = Scanner(src)
-        tokens = scanner.scan_tokens()
-        parser = Parser(tokens)
-        statements = parser.parse()
+        # Initialises the scanner with the source code.
+        scanner = Scanner(src)  
+        # Scans the source code into tokens.
+        tokens = scanner.scan_tokens()  
+        # Initialises the parser with the scanned tokens.
+        parser = Parser(tokens)  
+        # Parses the tokens into statements.
+        statements = parser.parse()  
+        # Returns early if a syntax error was reported during parsing.
         if error_reporter.had_error:
             return
-        resolver = Resolver(self._interpreter)
-        resolver.resolve(statements)
-        # Stop if there was a resolution error
+        # Initialises the resolver.
+        resolver = Resolver(self._interpreter)  
+        # Resolves variables and scopes in the statements.
+        resolver.resolve(statements)  
+        # Stops if there was a resolution error.
         if error_reporter.had_error:
             return
-        self._interpreter.interpret(statements)
+        self._interpreter.interpret(statements)  # Interprets the resolved statements.
+
 
 
 if __name__ == "__main__":

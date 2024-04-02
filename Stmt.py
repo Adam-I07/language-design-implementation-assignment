@@ -43,7 +43,7 @@ for name, attributes in subclasses.items():
         subclass_str += f"        self.{arg} = {arg}\n"
 
     subclass_str += "\n"
-    subclass_str += "    def accept(self, visitor: Visitor[R]) -> R:\n"  # Adds accept method for visitor pattern.
+    subclass_str += "    def accept(self, visitor: Visitor[R]):\n"  # Adds accept method for visitor pattern.
     subclass_str += f"        return visitor.visit_{name.lower()}_stmt(self)\n"
 
     exec(subclass_str, globals())  # Dynamically executes the class definition code in the global namespace.
