@@ -48,9 +48,9 @@ class Parser:
                 return self.var_declaration()
             # If none of the above, parse a statement.
             return self.statement()  
-        # Catch parsing errors to synchronize and recover.
+        # Catch parsing errors to synchronise and recover.
         except ParseError:  
-            # Attempt to recover from the error by synchronizing.
+            # Attempt to recover from the error by synchronising.
             self.synchronize()  
             # Return None to indicate the failure to parse a declaration.
             return None  
@@ -412,9 +412,9 @@ class Parser:
         # If no unary operator is found, proceed to parsing a call expression.
         return self.call()
 
-    # Finalize parsing a call expression, including handling arguments.
+    # Finalise parsing a call expression, including handling arguments.
     def finish_call(self, callee: Expr):
-        arguments = []  # Initialize an empty list for function arguments.
+        arguments = []  # Initialise an empty list for function arguments.
         # Continue parsing arguments until a ')' is encountered or the argument limit is reached.
         if not self.check(TokenType.RIGHT_PAREN):
             while True:
@@ -539,7 +539,7 @@ class Parser:
         # Return a new ParseError instance.
         return ParseError()
 
-    # Synchronize the parser by advancing past problematic tokens until a statement boundary is found.
+    # Synchronise the parser by advancing past problematic tokens until a statement boundary is found.
     def synchronize(self):
         # Advance to the next token to start error recovery.
         self.advance()
