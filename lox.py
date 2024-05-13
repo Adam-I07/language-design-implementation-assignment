@@ -30,7 +30,7 @@ class Lox:
             print(f"{i + 1}. Exit")
             # Enter a loop to handle user input.
             while True:
-                user_choice = input("Enter what you would like to do: ")
+                user_choice = input("Enter the number associated with the script you would like to run: ")
                 # Ensure the user enters a choice.
                 if not user_choice:
                     print("Please enter a number.")

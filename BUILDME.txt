@@ -1,0 +1,30 @@
+------------------------
+Prerequisites:
+------------------------
+The following are prerequsites that should be satisfied:
+    1. Python 3.7 or higher installed on your system.
+------------------------
+Building the Project:
+------------------------
+1. Open your terminal or command prompt.
+
+2. Navigate to the project directory where the language is stored and you are in it.
+
+    cd your/path/to/language-design-implementation-assignment/
+
+3. To run the program type the following command when you are in the directory:
+
+    python lox.py
+
+4. Once the application is started the following screen appears:
+    
+    Select a script to run or exit:
+    1. stage1.lox
+    2. stage2.lox 
+    3. stage3.lox 
+    4. stage4.lox
+    5. stage5.lox
+    6. Exit
+    Enter the number associated with the script you would like to run:
+    
+---------------------
