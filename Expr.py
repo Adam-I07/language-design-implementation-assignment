@@ -1,6 +1,6 @@
 """
 Abstract base class for all expression types. Defines the structure for expression evaluation.
-Subclasses (Binary, Grouping, Literal, Unary, Variable, etc.) Description: Represent specific types of expressions.
+Subclasses (Binary, Grouping, Literal, Unary, Variable, etc.) Represent specific types of expressions.
 Each subclass defines the structure and evaluation logic for its type of expression, such as binary
 operations, literals, variable references, and more.
 """
