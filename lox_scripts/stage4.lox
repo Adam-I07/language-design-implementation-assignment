@@ -1,4 +1,4 @@
-var quickMaths = 9 + 10;
+var quickMaths = 10;
 quickMaths = quickMaths + 2;
 print quickMaths;
 

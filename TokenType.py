@@ -1,3 +1,8 @@
+"""
+Enumerates all possible token types in Lox. Defines constants for each token type (keywords, operators, punctuation, 
+literals, etc.), used by the scanner to categorize lexemes and by the parser to interpret tokens correctly.
+"""
+
 from enum import Enum
 
 class TokenType(Enum):

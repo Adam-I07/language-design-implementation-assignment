@@ -1,3 +1,9 @@
+"""
+Represents runtime errors encountered during interpretation. Extends Python's Exception class to provide custom error 
+handling for Lox runtime errors. It stores error messages and relevant token information to facilitate debugging and 
+error reporting during program execution. 
+"""
+
 from Token import Token
 
 # Class for runtime errors in the program.

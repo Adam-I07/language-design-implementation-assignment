@@ -1,3 +1,9 @@
+"""
+Centralises error reporting for the interpreter. Tracks and reports errors. It has methods to report lexical, syntax, 
+and runtime errors, printing messages to the console and maintaining a status of whether any errors have been 
+encountered (hadError, hadRuntimeError). It ensures consistent error handling throughout the interpreter. 
+"""
+
 import sys
 from functools import singledispatchmethod
 from Token import Token

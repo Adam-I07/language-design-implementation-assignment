@@ -1,3 +1,9 @@
+"""
+Represents an instance of a LoxClass in the interpreter. Stores instance fields and provides methods to get and set 
+them. It manages method lookups, enabling dynamic method binding for class instances. The class ensures encapsulation 
+and access control for instance variables and methods. 
+"""
+
 from Token import Token
 from RuntimeError import RuntimeError
 

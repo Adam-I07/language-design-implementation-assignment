@@ -1,3 +1,10 @@
+"""
+Abstract base class for all statement types in Lox. Defines the structure for statement execution. Subclasses 
+(Expression, Print, Var, Block, If, While, Function, Return, etc.) Represent specific types of statements. 
+Each subclass defines the structure and execution logic for its type of statement, such as variable declarations, 
+control flow constructs, and function definitions.
+"""
+
 from Expr import Expr, Variable
 from Token import Token
 from typing import Generic, TypeVar, List

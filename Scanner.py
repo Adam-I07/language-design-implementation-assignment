@@ -1,3 +1,9 @@
+"""
+Converts source code into a list of tokens. Implements lexical analysis, scanning through the source code character 
+by character to identify and generate tokens. It categorises lexemes into different token types (keywords, operators, 
+literals, etc.) and reports lexical errors when invalid sequences are encountered. 
+"""
+
 from TokenType import TokenType
 from Token import Token
 from ErrorReporter import error_reporter

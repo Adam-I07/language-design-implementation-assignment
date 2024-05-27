@@ -1,3 +1,9 @@
+"""
+Converts a list of tokens into an Abstract Syntax Tree (AST). Implements parsing logic to build the AST from lexical 
+tokens. It handles syntax rules and constructs for the Lox language, including expressions, statements, and control 
+structures. The class provides error recovery mechanisms to handle and report parsing errors gracefully. 
+"""
+
 from typing import List
 from Token import Token
 from TokenType import TokenType

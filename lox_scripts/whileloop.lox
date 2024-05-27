@@ -3,3 +3,19 @@ while (a < 5) {
     print a;
     a = a + 1;
 }
+
+print ("--------");
+var i = 0;
+var j = 0;
+while (i < 5) {
+    while (j < 3) {
+        j = j + 1;
+        print("J is currently " + j);
+        if (j == 3) {
+            print ("J has incremented successfully to the limit");
+        }
+    }
+    j = 0;
+    i = i + 1;
+    print ("i is currently " + i);
+}

@@ -1,3 +1,8 @@
+"""
+Implements an input function for the interpreter. Inherits from LoxCallable. Prompts the user for input, optionally 
+using a provided string prompt. Defines arity to specify it expects one argument.
+"""
+
 from LoxCallable import LoxCallable 
 
 class LoxInput(LoxCallable):

@@ -1,3 +1,9 @@
+"""
+Represents a lexical token with type, lexeme, literal value, and line number. Encapsulates information about individual 
+tokens produced by the scanner, used by the parser to build the AST. It aids in error reporting by providing context 
+about the source code position.
+"""
+
 from TokenType import TokenType
 
 class Token:

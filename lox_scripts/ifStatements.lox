@@ -14,3 +14,17 @@ if (1 == 2) {
 
 print 2 == 2;
 print 1 == 2;
+
+print("-----------");
+
+var type = "car";
+var vehicle = "Audi";
+
+if (type == "car") {
+    if (vehicle == "Audi") {
+        print "I have an Audi";
+    }
+}
+else {
+    print "I don't have an Audi";
+}

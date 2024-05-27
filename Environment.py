@@ -1,3 +1,9 @@
+"""
+Manages a nested scope environment for variable storage and retrieval. Each environment can have a parent environment,
+creating a chain. Provides methods to define new variables (define), assign values to existing variables (assign), 
+and retrieve variable values (get). It also supports creating isolated environments for different execution contexts, 
+facilitating scope management. 
+"""
 from typing import Self
 from Token import Token
 from RuntimeError import RuntimeError

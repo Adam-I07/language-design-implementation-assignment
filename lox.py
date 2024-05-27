@@ -1,3 +1,9 @@
+"""
+Entry point for the Lox interpreter. Handles reading scripts or interactive input, initialising the interpreter, 
+and managing the REPL (Read-Eval-Print Loop). It processes user input, passes it to the interpreter, and prints results
+or errors. 
+"""
+
 import sys
 import os
 from Scanner import Scanner

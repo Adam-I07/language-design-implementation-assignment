@@ -1,3 +1,8 @@
+"""
+Represents a class in Lox. Implements LoxCallable, allowing instances of LoxClass to be created. Manages class methods, 
+inheritance (via superclass), and provides the mechanism for calling class constructors and methods. 
+"""
+
 from LoxCallable import LoxCallable
 from LoxInstance import LoxInstance
 from LoxFunction import LoxFunction

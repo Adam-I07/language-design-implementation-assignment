@@ -1,3 +1,8 @@
+"""
+Represents a function in Lox. Implements LoxCallable. Manages function parameters, closure (the environment where 
+it was declared), and execution. Supports method binding and initialisers for classes.
+"""
+
 from typing import List, Self
 from Return import Return
 from Environment import Environment

@@ -1,3 +1,9 @@
+"""
+Performs static analysis to resolve variable scopes and ensure proper variable usage. Traverses the AST to determine 
+variable lifetimes and scopes, ensuring variables are declared before use and managing nested scopes. It interacts with 
+the Interpreter to maintain correct variable bindings, aiding in early detection of scope-related errors
+"""
+
 import Expr
 import Stmt
 from Token import Token

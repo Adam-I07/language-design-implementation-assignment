@@ -1,3 +1,8 @@
+"""
+Interface for any object that can be called like a function. Defines a common interface with methods arity (to specify 
+the number of arguments) and call (to execute the callable object). Used as a base for functions and classes. 
+"""
+
 from typing import List
 
 class LoxCallable:

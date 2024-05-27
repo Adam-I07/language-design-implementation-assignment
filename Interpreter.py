@@ -1,3 +1,8 @@
+"""
+Executes the AST (Abstract Syntax Tree) nodes defined by Stmt and Expr classes. Contains methods to evaluate expressions
+and execute statements, managing the flow of control, function calls, and variable scope. It interacts with Environment
+for variable management and ErrorReporter for error handling.
+"""
 from time import time
 from typing import List, Self
 from types import MethodType
