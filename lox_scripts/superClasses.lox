@@ -15,6 +15,7 @@ class B < A {
   }
 }
 B().method();
+B().test();
 
 class C < B {}
 
