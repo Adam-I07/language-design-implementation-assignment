@@ -5,6 +5,7 @@ class DevonshireCream {
 }
 
 print DevonshireCream; // Prints "DevonshireCream".
+print DevonshireCream().serveOn();
 
 class Bagel {}
 var bagel = Bagel();
