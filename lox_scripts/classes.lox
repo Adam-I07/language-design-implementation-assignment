@@ -12,8 +12,9 @@ var bagel = Bagel();
 print bagel; // Prints "Bagel instance".
 
 class Bacon {
+  var name = "name";
   eat() {
-    print "Crunch crunch crunch!";
+    print name;
   }
 }
 
